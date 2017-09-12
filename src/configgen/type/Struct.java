@@ -163,6 +163,16 @@ public final class Struct {
 		return fields;
 	}
 
+	public ArrayList<Field> getSelfAndParentFiels() {
+		if(base.isEmpty()) {
+			return new ArrayList<>(fields);
+		} else {
+			ArrayList<Field> totalFields = Struct.get(base).getSelfAndParentFiels();
+			totalFields.addAll(fields);
+			return totalFields;
+		}
+	}
+
     public String getdelimiter() {
         return delimiter;
     }

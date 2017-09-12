@@ -21,52 +21,36 @@ public class CodeGen implements Generator {
 		return ENUM.isEnum(type) ? "int" : type;
 	}
 	
-	void genStructBody(Struct struct, ArrayList<String> ls) {
-		final String base = struct.getBase();
-		if(Field.isStruct(base)) {
-			genStructBody(Struct.get(base), ls);
-		}
-		
-		for(Field f : struct.getFields()) {
+	String genStructBody(Struct struct, ArrayList<String> ls) {
+		StringBuilder sb = new StringBuilder();
+		for(Field f : struct.getSelfAndParentFiels()) {
 			String ftype = f.getType();
 			String fname = f.getName();
 			final List<String> ftypes = f.getTypes();
 			if(f.checkInGroup(Main.groups)) {
 				if(f.isRaw()) {
-					ls.add(String.format("o.%s = %s(self)", fname, ftype));
+					sb.append(String.format("%s(self),", ftype));
 				} else if(f.isStruct()) {
-					ls.add(String.format("o.%s = os['%s'](self)", fname, ftype));
+					sb.append(String.format("os['%s'](self),", ftype));
 				} else if(f.isEnum()) {
-					ls.add(String.format("o.%s = int(self)", fname));
+					sb.append("int(self),");
 				} else if(f.isContainer()) {
 					switch(ftype) {
 						case "list": {
 							final String valueType = toLuaType(ftypes.get(1));
-							ls.add(String.format("local _list = list(self, '%s')", valueType));
-							ls.add(String.format("o.%s = _list", fname));
-							
-							if(!f.getIndexs().isEmpty()) {
-								final ArrayList<String> cs = new ArrayList<String>();
-								cs.add("for _, _V in ipairs(_list) do");
-								for(String idx : f.getIndexs()) {
-									ls.add(String.format("o.%s_%s = {}", fname, idx));
-									cs.add(String.format("o.%s_%s[_V.%s] = _V", fname, idx, idx));
-								}
-								cs.add("end");
-								ls.addAll(cs);
-							}
+							sb.append(String.format("list(self, '%s'),", valueType));
 							
 							break;
 						}
 						case "set": {
 							final String valueType = toLuaType(ftypes.get(1));
-							ls.add(String.format("o.%s = set(self, '%s')", fname, valueType));
+							sb.append(String.format("set(self, '%s'),", valueType));
 							break;
 						}
 						case "map": {
 							final String keyType = toLuaType(ftypes.get(1));
 							final String valueType = toLuaType(ftypes.get(2));
-							ls.add(String.format("o.%s = map(self, '%s', '%s')", fname, keyType, valueType));
+							sb.append(String.format("map(self, '%s', '%s'),", keyType, valueType));
 							break;
 						}
 					}
@@ -75,6 +59,7 @@ public class CodeGen implements Generator {
 				}
 			}
 		}
+		return sb.toString();
 	}
 	
 	String toLuaValue(String type, String value) {
@@ -97,6 +82,7 @@ public class CodeGen implements Generator {
 		ls.add("local setmetatable = setmetatable");
 		ls.add("local find = string.find");
 		ls.add("local sub = string.sub");
+		ls.add("local rawget = rawget");
 		ls.add("local bool = os.bool\n" +
 				"local int = os.int\n" +
 				"local long = os.long\n" +
@@ -129,15 +115,21 @@ public class CodeGen implements Generator {
 		ls.add("return self[typename](self)");
 		ls.add("end");
 		ls.add("");
-		ls.add("local meta");
 
 		for(Struct struct : Struct.getExports()) {
 			final String fullname = struct.getFullName();
 			final String name = struct.getName();
-			
-			ls.add("meta = {}");
-			ls.add("meta.__index = meta");
-			ls.add("meta.class = '" + fullname + "'");
+			ls.add("do");
+			ls.add("local meta = {}");
+
+			StringBuilder sb = new StringBuilder("local indexs = {class=0,");
+			int index = 0;
+			for(Field f : struct.getSelfAndParentFiels()) {
+				sb.append(f.getName()).append('=').append(++index).append(',');
+			}
+			sb.append('}');
+			ls.add(sb.toString());
+			ls.add("meta.__index = function (t, key) local index = indexs[key] return rawget(t, index) or (index == 0 and '" + fullname + "') end");
 			for(Const c : struct.getConsts()) {
 				ls.add(String.format("meta.%s = %s", c.getName(), toLuaValue(c.getType(), c.getValue())));
 			}
@@ -147,11 +139,11 @@ public class CodeGen implements Generator {
 			if(struct.isDynamic()) {
 				ls.add("return self[string(self)](self)");
 			} else {
-				ls.add("local o = {}");
+				ls.add("local o = {" + genStructBody(struct, ls) + "}");
 				ls.add("setmetatable(o, meta)");
-				genStructBody(struct, ls);
 				ls.add("return o");
 			}
+			ls.add("end");
 			ls.add("end");
 		}
 		
