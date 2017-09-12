@@ -1,0 +1,24 @@
+<configs namespace="cfg.cmd">
+	<import input="condition.xml"/>
+	<import input="action.xml"/>
+
+	<enum name="ConfigId">
+		<const name="MALL" value="1"/>
+		<const name="ITEMBASIC" value="2"/>
+		<const name="LOTTERY" value="3"/>抽卡
+		<const name="RANK" value="4"/>排行榜
+		<const name="FAMILY_PRAY" value="5"/>家族
+		<const name="REVIVE" value="6"/>复活
+		<const name="STORY_ECTYPE" value="7"/>剧情副本
+		<const name="CLIMB_TOWER_ECTYPE" value="8"/>爬塔副本
+		<const name="DAILY_ECTYPE" value="9"/>金钱副本
+		<const name="TRANSPORT" value="12"/>地图传送
+		<const name="PERSONAL_BOSS_ECTYPE" value="14"/> 个人Boss
+		<const name="FABAO_LUCK" value="15"/>法宝转运
+		<const name="FAMILY_FEED" value="16"/>家族
+		<const name="ARENA_CHALLENGE" value="17"/>竞技场每日挑战次数
+		<const name="ARENA_REFRESH_OPPONENT" value="18"/>竞技场每日刷新对手次数
+		<const name="PET_ACTIVE_EQUIP" value="19"/>伙伴出战归队cd
+		<const name="AMULET_WASH" value="20"/>护符每日洗练次数
+	</enum>
+</configs>

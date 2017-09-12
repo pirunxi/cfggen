@@ -1,0 +1,135 @@
+<configs namespace="cfg.cmd.condition">
+	<enum name="LimitType">
+		<const name="DAY" value="1" alias="每日限购"/>
+		<const name="WEEK" value="2" alias="每周限购"/>
+		<const name="MONTH" value="3" alias="每月限购"/>
+		<const name="LIFELONG" value="4" alias="终生限购"/>
+	</enum>
+	
+	<struct name="Condition">
+		<struct name="Gender">
+			<field name="gender" type="cfg.role.GenderType"/>
+		</struct>
+		<struct name="MinLevel">
+			<field name="level" type="int"/>
+		</struct>
+		<struct name="MaxLevel">
+			<field name="level" type="int"/>
+		</struct>
+		<struct name="MinMaxLevel">
+			<field name="min" type="int"/>
+			<field name="max" type="int"/>
+		</struct>
+		<struct name="MinVipLevel">
+			<field name="level" type="int"/>
+		</struct>
+		<struct name="MinFamilyLevel">
+			<field name="level" type="int"/>
+		</struct>
+		<struct name="MinFamilyShopLevel">
+			<field name="level" type="int"/>
+		</struct>
+		<struct name="OneItem">
+			<field name="itemid" type="int" ref="item"/>
+		</struct>
+		<struct name="Item">
+			<field name="itemid" type="int"/>
+			<field name="amount" type="int"/>
+		</struct>
+		<struct name="Currency">
+			<field name="currencytype" type="cfg.currency.CurrencyType"/>
+			<field name="amount" type="int"/>
+		</struct>
+		<struct name="Currencys">
+			<field name="currencys" type="list:Currency"/>
+		</struct>
+		<struct name="FamilyMoney">
+			<field name="money" type="long"/>
+		</struct>
+		<struct name="FixCurrency">
+			<field name="amount" type="int"/>
+			<struct name="XuNiBi"/>
+			<struct name="YuanBao"/>
+			<struct name="BindYuanBao"/>
+			<struct name="LingJing"/>
+			<struct name="JingYan"/>
+			<struct name="ZaoHua"/>
+			<struct name="WuXing"/>
+			<struct name="BangPai"/>
+			<struct name="ShiMen"/>
+			<struct name="ZhanChang"/>
+			<struct name="ShengWang"/>
+			<struct name="HuoBanJiFen"/>
+			<struct name="FaBaoJiFen"/>
+			<struct name="ChengJiu"/>
+			<struct name="BangGong"/>
+			<struct name="TianFu"/>
+			<struct name="TiLi"/>
+		</struct>
+		<struct name="OR">
+			<field name="first" type="Condition"/>
+			<field name="second" type="Condition"/>
+		</struct>
+		<struct name="ORs">
+			<field name="conditions" type="list:Condition"/>
+		</struct>
+		<struct name="VipLimitsLite">精简后的Vip限制
+			<field name="entertimes" type="list:int"/>进入次数，是个数组，第一个是vip0      5,6,6,7,7,8,9,10
+		</struct>
+		<struct name="VipLimits"> 每日限制
+			<field name="currencytype" type="cfg.currency.CurrencyType"/> 
+			<field name="entertimes" type="list:int"/>进入次数，是个数组，第一个是vip0      5,6,6,7,7,8,9,10
+			<field name="amout" type="list:int"/>     0,0,0,0,0,5,5,5,5,5,5,5
+		</struct>
+		<struct name="VipLimits2">
+			<field name="entertimes" type="list:int"/>进入次数，是个数组，第一个是vip0      5,6,6,7,7,8,9,10
+			<field name="costs" type="list:Condition"/>
+		</struct>
+		<struct name="Limit">
+			<field name="type" type="LimitType"/>
+			<field name="num" type="int"/>
+		</struct>
+		<struct name="DayLimit">简单的每日限制
+			<field name="num" type="int"/>
+		</struct>
+		<struct name="Limits">
+			<field name="limits" type="list:Limit"/>
+		</struct>
+		<struct name="TimeLimit">
+			<field name="limittype" type="LimitType"/>
+			<field name="starttime" type="int"/>
+			<field name="endtime" type="int"/>
+		</struct>
+		<struct name="CoolDown">冷却
+			<field name="time" type="float"/>
+		</struct>
+		<struct name="GroupCoolDown">
+			<field name="groupid" type="int"/>
+			<field name="time" type="float"/>
+		</struct>
+		<struct name="TeamMemberNumber">
+			<field name="min" type="int"/>
+			<field name="max" type="int"/>
+		</struct>
+		<struct name="CompleteTask">
+			<field name="taskid" type="int"/>
+		</struct>
+		<struct name="OpenEctype">
+			<field name="ectypeid" type="int"/>
+		</struct>
+		<struct name="ServerController">
+			<field name="controllerid" type="int"/>
+		</struct>
+		<struct name="ProfessionLimit">
+			<field name="profession" type="cfg.role.EProfessionType"/>
+		</struct>
+		<struct name="BlackMallOpen">
+		</struct>
+		<struct name="NearNPC">
+			<field name="npcid" type="int"/>
+		</struct>
+		<struct name="MultiCondition">
+			<field name="conditions" type="list:Condition"/>
+		</struct>
+	</struct>
+</configs>

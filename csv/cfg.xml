@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf8"?>
+
+<configs namespace="cfg">
+	<group name="server:client:designer:editor"/>
+	
+	<import input="item/item.xml"/>
+	<import input="cmd/cmd.xml"/>
+	<import input="role/role.xml"/>
+	<import input="ectype/storylayout.xml"/>
+	<import input="currency/currency.xml"/>
+	<enum name="Const">
+	</enum>
+</configs>

@@ -1,0 +1,119 @@
+﻿<configs namespace="cfg.item">
+	<enum name="EItemMedicineType">
+		<const name="HEAL_HP" value="1"/>加血
+		<const name="HEAL_MP" value="2"/>加蓝
+		<const name="HEAL_HP_PERCENT" value="3"/>加血%（1为回满）
+	</enum>
+	<enum name="EItemBindType">绑定类型
+		<const name="BOUND" alias="拾取后绑定" value="1"/>
+		<const name="USE_BOUND" alias="装备后绑定" value="2"/>
+		<const name="NOT_BOUND" alias="不绑定" value="3"/>
+	</enum>
+	<enum name="EItemColor">物品品质
+		<const name="WHITE" alias="白" value="0"/>
+		<const name="GREEN" alias="绿" value="1"/>
+		<const name="BLUE" alias="蓝" value="2"/>
+		<const name="PURPLE" alias="紫" value="3"/>
+		<const name="ORANGE" alias="橙" value="4"/>
+		<const name="RED" alias="红" value="5"/>
+	</enum>
+	<struct name="ItemEntry">礼包表的具体物品
+		<field name="itemid" type="int"/>
+		<field name="number" type="int"/>
+	</struct>
+	<enum name="EItemType">物品类型
+		<const name="COMMON" alias="普通" value="1"/>
+		<const name="MEDICINE" alias="消耗品" value="2"/>
+		<const name="CURRENCY" alias="元宝" value="3"/>
+		<const name="GIFTPACK" alias="礼包" value="4"/>
+		<const name="ENHANCE"  alias="强化道具" value="5"/>
+		<const name="OTHER"  alias="其他道具" value="6"/>
+		<const name="QUEST" alias="任务物品" value="7"/>
+        <const name="FLOWER" alias="鲜花" value ="8"/>
+		<const name="JEWELRY" alias="宝石" value="9"/>
+		<const name="FASHION" alias="时装" value="10"/>
+		<const name="RIDING" alias="坐骑" value="11"/>
+	</enum>
+	<enum name="LevelUpType">
+		<const name="ROLE_LEVEL" value="1"/>
+		<const name="PET_LEVEL" value="2"/>
+		<const name="TALISMAN_LEVEL" value="3"/>
+	</enum>
+	<enum name="FlowerType">
+		<const name="NPC" value="1"/>
+		<const name="PLAYER" value="2"/>
+	</enum>
+  <struct name="ItemSortOrder" >
+  	<const name="ITEM_SORT_ORDER" type="string" value="level,quality,number"/>
+  	<const name="ITEM_SORT_RULE" type="string"  value="desc,desc,asc"/>
+  </struct>
+	<config name="ItemConfig" input="itemconfig.xlsx" single="true">
+		<field name="bagextendcost" type="cfg.cmd.condition.FixCurrency"/>开启背包格子需要的元宝数目
+		<field name="initialbagcell" type="int"/>背包的初始容量
+		<field name="maxbagcell" type="int"/>背包的最大容量
+		</config>
+	<config name="ItemBasic" index="id" input="item.xlsx" output="item.data">
+		<field name="id" type="int"/>
+		<field name="name" type="string"/>
+		<field name="owner" type="string"/>策划多人编辑用
+		<field name="itemtype" type="EItemType"/> 物品类型
+		<field name="icon" type="string"/>图标
+		<field name="level" type="int"/>物品等级
+		<field name="quality" type="EItemColor"/>物品品质
+		<field name="prize" type="int"/>卖出价格
+		<field name="gender" type="cfg.cmd.condition.Gender"/>性别限制
+		<field name="professionlimit" type="cfg.cmd.condition.ProfessionLimit"/>职业限制
+		<field name="bindtype" type="cfg.cmd.action.BindType"/>绑定类型
+		<field name="introduction" type="string"/>介绍
+		<field name="levellimit" type="cfg.cmd.condition.MinMaxLevel"/>
+		<field name="maxpile" type="int"/>最大堆叠
+		<field name="batch" type="bool"/>是否可以批量使用
+		<field name="cansell" type="bool"/>是否可以卖店
+		<field name="daylimit" type="cfg.cmd.condition.DayLimit"/>每日限制次数
+		<struct name="ItemMedicine">
+			<field name="buffid" type="int"/>
+			<field name="hp" type="int"/>
+			<field name="mp" type="int"/>
+			<field name="cdgroup" type="cfg.cmd.condition.GroupCoolDown"/>
+		</struct>
+		<struct name="ItemExperience">
+			<field name="effect" type="cfg.cmd.action.AddExperience"/>
+		</struct>
+		<struct name="ItemGiftPack">
+			<field name="itempacklist" type="cfg.cmd.action.MultiBonus" />
+		</struct>
+		<struct name="ItemEnhance">
+		</struct>
+		<struct name="ItemTask">
+		</struct>
+		<struct name="Jewelry">
+			<field name="initalvalue" type="int"/>宝石天生携带的属性值
+			<field name="maturerate" type="float"/>宝石成长率
+			<field name="exp" type="int"/>宝石携带的天生经验
+		</struct>
+		<struct name="ItemOther" />
+		<struct name="Amulet">
+			<field name="propertyamountweight" type="list:int"/>
+		</struct>
+		<struct name="ItemFlower">鲜花，好友系统用的
+			<field name="flowertype" type="FlowerType"/>
+			<field name="frienddegree" type="int"/>
+			<field name="image" type="string"/>
+		</struct>
+		<struct name="ItemLevelUp">
+			<field name="leveluptype" type="LevelUpType"/>
+			<field name="lvl" type="int"/>
+		</struct>
+		<struct name="ItemDress">
+			<field name="dressid" type="int"/>
+		</struct>
+		<struct name="ItemRiding">
+			<field name="ridingid" type="int"/>
+		</struct>
+		<struct name="ItemCurrency">货币，供客户端展示用，服务器不要处理
+			<field name="amount" type="int"/>
+		</struct>
+	</config>
+	
+
+</configs>

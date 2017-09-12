@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf8"?>
+
+<configs namespace="cfg.role">
+	<enum name="NamePosition">
+		<const name="FROND" alias="前"/>
+		<const name="MIDDLE" alias="中"/>
+		<const name="END" alias="后"/>
+	</enum>
+	<struct name="Names">
+		<field name="names" type="list:string"/>
+	</struct>
+	<struct name="DecorateName">
+		<field name="name" type="string"/>
+		<field name="position" type="NamePosition"/>
+		<field name="weight" type="int"/>
+	</struct>
+	<config name="Name" input="name.xlsx" single="true">
+		<field name="firstnames" type="list:Names"/>
+		<field name="lastnames" type="Names"/>
+		<field name="deconames" type="list:DecorateName"/>
+	</config>
+
+	<struct name="Const">
+		<const name="MAX_LEVEL" value="90" />
+		<const name="MIN_NAME_LEN" value="1"/>
+		<const name="MAX_NAME_LEN" value="8"/>
+		<const name="PLAYER_SELECT_TARGET_RADIUS" type="float" value="15"/>玩家选择目标距离
+		<const name="PLAYER_LOSE_TARGET_RADIUS" type="float" value="20"/>玩家丢失目标距离
+		<const name="SMART_ATTACK" type="int" value="1"/>是否开启智能施法模式
+	</struct>
+	<enum name="EProfessionType">
+		<const name="QINGYUNMEN" alias="青云门"  value="1"/>
+		<const name="TIANYINSI" alias="天音寺"  value="2"/>
+		<const name="GUIWANGZONG" alias="鬼王宗"  value="3"/>
+		<const name="HEHUANPAI" alias="合欢派"  value="4"/>
+	</enum>
+	<enum name="GenderType">
+		<const name="MALE" alias="男" value="0"/>
+		<const name="FEMALE" alias="女" value="1"/>
+	</enum>
+
+	<config name="Profession" index="id" input="profession.xlsx">
+		<field desc="职业Id" name="id" type="int" />
+		<field desc="门派" name="faction" type="EProfessionType" />
+		<field desc="性别" name="gender" type="GenderType" />
+		<field desc="职业是否开放" name="isopen" type="bool" />
+		<field name="modelname" type="string"/>
+		<field name="weight" type="int"/>
+		<field desc="法宝技能动作id" name="skillactionid" type="int" />
+		<field name="defaultweaponid" type="int"/>角色空手时表现的武器id
+		<field name="createweaponid" type="int"/>创建角色时表现的武器id
+		<field name="createarmourid" type="int"/>创建角色时表现的防具id
+	</config>
+	
+	<config name="Profession2" extern="true" input="profession2.xlsx"/>
+
+	<enum name="BagType">背包类型
+		<const name="ITEM"/>
+		<const name="FRAGMENT"/>
+		<const name="EQUIP"/>
+	</enum>
+	
+	<struct name="Vector2">
+		<field name="x" type="float"/>
+		<field name="y" type="float"/>
+	</struct>
+	
+	<config name="RoleConfig" input="roleconfig.xlsx" single="true">
+		<field name="bornmap" type="int"/>
+		<field name="bornpoint" type="Vector2" delimitor=","/>
+		<field name="viewportminradius" type="float"/>
+		<field name="viewportmaxradius" type="float"/>
+	
+		<field name="worldbonus" type="float"/>大地图杀怪加倍收益
+		<field name="duegonbonus" type="float"/>地宫杀怪加倍收益
+		
+		<field name="addtiliinterval" type="int"/>
+		<field name="addtilivalue" type="int"/>
+		
+		<field name="createroletasks" type="list:int" delimitor=";"/>
+	</config>
+	
+</configs>

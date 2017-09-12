@@ -1,0 +1,32 @@
+﻿<configs namespace="cfg.currency">
+	
+	<enum name="CurrencyType">
+		<const name="XuNiBi" value="1" alias="虚拟币"/>
+		<const name="YuanBao" value="2" alias="元宝"/>
+		<const name="BindYuanBao" value="3" alias="绑定元宝"/>
+		<const name="LingJing" value="4" alias="灵晶"/>
+		<const name="JingYan" value="5" alias="经验"/>
+		<const name="ZaoHua" value="6" alias="造化值"/>
+		<const name="WuXing" value="7" alias="悟性值"/>
+		<const name="BangPai" value="8" alias="帮派贡献"/>
+		<const name="ShiMen" value="9" alias="师门贡献"/>
+		<const name="ZhanChang" value="10" alias="战场声望"/>
+		<const name="ShengWang" value="11" alias="竞技场声望"/>
+		<const name="HuoBanJiFen" value="12" alias="伙伴积分"/>
+		<const name="FaBaoJiFen" value="13" alias="法宝积分"/>
+		<const name="ChengJiu" value="14" alias="成就值"/>
+		<const name="BangGong" value="15" alias="个人帮贡值"/>
+		<const name="TianFu" value="16" alias="伙伴天赋值"/>
+		<const name="TiLi" value="17" alias="体力值"/>
+		<!--   加新货币类型时记得修改cfg.cmd.condition与cfg.cmd.action           -->
+	</enum>
+	
+	<config name="Currency" input="currency.xlsx" index = "type">
+		<field name = "type" type="cfg.currency.CurrencyType" />
+		<field name = "name" type = "string" />
+		<field name = "icon" type = "string" />
+		<field name = "itemid" type = "int" />
+		<field name="introduction" type="string"/>
+	</config>
+
+</configs>

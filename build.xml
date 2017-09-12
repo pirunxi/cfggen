@@ -1,0 +1,40 @@
+
+<!--suppress XmlUnboundNsPrefix -->
+<project name="config" default="dist">
+	<property name="src" value="src/" />
+	<property name="build" value="classes/" />
+	<property name="lib" value="../lib" />
+
+	<target name="init">
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<path id="classpath">
+			<fileset dir=".">
+				<include name="poi-*.jar" />
+				<include name="luaj-*.jar" />
+			</fileset>
+		</path>
+		<javac encoding="utf8" srcdir="${src}" destdir="${build}" includeantruntime="false" classpathref="classpath" debug="true" debuglevel="lines,source">
+			<compilerarg line="-Xlint:unchecked" />
+		</javac>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="dist" depends="clean, compile">
+		<jar jarfile="config.jar" basedir="${build}" manifest="${src}/MANIFEST.MF" >
+			<zipgroupfileset dir="." includes="poi-*.jar" />
+			<zipgroupfileset dir="." includes="luaj-*.jar" />
+			<zipgroupfileset dir="." includes="xmlbeans-*.jar"/>
+		</jar>
+		<delete dir="${build}"/>
+	</target>
+
+	<target name="install" depends="clean, dist">
+		<copy file="config.jar" todir="${lib}" />
+	</target>
+</project>

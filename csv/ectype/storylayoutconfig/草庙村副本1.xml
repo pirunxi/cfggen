@@ -1,0 +1,276 @@
+<data>
+<!--副本ID-->
+<id>60410101</id>
+<storyexitscene>3</storyexitscene>
+<storyexitposition>
+<x>335</x>
+<y>82</y>
+</storyexitposition>
+<!--环境变量-->
+<enviroments>
+<item type = "Enviroment">
+<!--环境变量名-->
+<name>env1</name>
+<!--环境变量值-->
+<value>0</value>
+</item>
+<item type = "Enviroment">
+<!--环境变量名-->
+<name>env2</name>
+<!--环境变量值-->
+<value>0</value>
+</item>
+</enviroments>
+<!--版面列表-->
+<layouts>
+<item type = "Layout">
+<!--版面ID-->
+<id>1</id>
+<!--版面名称-->
+<name>出口版面</name>
+<!--复活点-->
+<reviveposition>
+<x>297</x>
+<y>99</y>
+</reviveposition>
+<!--版面初始位置-->
+<startposition>
+<x>320</x>
+<y>97</y>
+</startposition>
+<!--版面初始朝向-->
+<startrotation>0</startrotation>
+<!--空气墙特效-->
+<gfxid>0</gfxid>
+<!--是否可以拖屏-->
+<candrag>False</candrag>
+<!--拖屏人数-->
+<dragcount>0</dragcount>
+<!--版面区域-->
+<area type="CurveArea">
+<!--出入口ID-->
+<id>-1</id>
+<!--曲线区域ID-->
+<curveid>100</curveid>
+</area>
+<!--版面类型-->
+<type>ENTER</type>
+<!--入口-->
+<enters>
+</enters>
+<!--出口-->
+<exits>
+</exits>
+<!--版面完成条件-->
+<scripts>
+<item type="Parallel">
+<isglobal>False</isglobal>
+<actionid>1</actionid>
+<actions>
+<item type="SwitchUntil">
+<isglobal>False</isglobal>
+<actionid>2</actionid>
+<cases>
+<item>
+<conditions>
+</conditions>
+<action type="Sequence">
+<isglobal>False</isglobal>
+<actionid>3</actionid>
+<actions>
+<action type="KillMonster">
+<!--动作ID-->
+<actionid>4</actionid>
+<!--是否是全局条件-->
+<isglobal>True</isglobal>
+<missions>
+<item>
+<!--怪物ID-->
+<monsterid>21010102</monsterid>
+<!--环境变量-->
+<enviroment>env2</enviroment>
+<!--数量-->
+<count>6</count>
+</item>
+</missions>
+</action>
+<action type="LayoutFinished">
+<isglobal>False</isglobal>
+<actionid>5</actionid>
+<flayoutid>1</flayoutid>
+</action>
+</actions>
+</action>
+</item>
+</cases>
+</item>
+<item type="Sequence">
+<isglobal>False</isglobal>
+<actionid>6</actionid>
+<actions>
+<item type="Parallel">
+<isglobal>False</isglobal>
+<actionid>7</actionid>
+<actions>
+<item type="SwitchUntil">
+<isglobal>False</isglobal>
+<actionid>8</actionid>
+<cases>
+<item>
+<conditions>
+</conditions>
+<!--执行事件-->
+<action type="Parallel">
+<isglobal>False</isglobal>
+<actionid>9</actionid>
+<actions>
+<item type = "ControllerOperation">
+<!--动作ID-->
+<actionid>10</actionid>
+<!--是否是全局条件-->
+<isglobal>False</isglobal>
+<!--控制器操作-->
+<id>6010101</id>
+<!--操作类型 1open 2close-->
+<isopen>True</isopen>
+</item>
+<item type = "Dialog">
+<!--动作ID-->
+<actionid>11</actionid>
+<!--是否是全局条件-->
+<isglobal>False</isglobal>
+<!--目标ID-->
+<id>0</id>
+<!--true 气泡对话 false半身对话-->
+<isbubble>False</isbubble>
+<!--对话时长-->
+<time>3</time>
+<!--音频ID-->
+<audioid>0</audioid>
+<!--对话内容-->
+<content>什么人竟敢当街行凶！</content>
+<!--方向-->
+<side>0</side>
+<!--对话人物类型-->
+<speakertype>0</speakertype>
+<!--停止玩家操作-->
+<isstop>True</isstop>
+<!--对话类型-->
+<dialogtype>0</dialogtype>
+</item>
+</actions>
+</action>
+</item>
+</cases>
+</item>
+</actions>
+</item>
+<item type="Parallel">
+<isglobal>False</isglobal>
+<actionid>12</actionid>
+<actions>
+<item type="SwitchUntil">
+<isglobal>False</isglobal>
+<actionid>13</actionid>
+<cases>
+<item>
+<conditions>
+</conditions>
+<!--执行事件-->
+<action type="Parallel">
+<isglobal>False</isglobal>
+<actionid>14</actionid>
+<actions>
+<item type = "KillMonster">
+<!--动作ID-->
+<actionid>15</actionid>
+<!--是否是全局条件-->
+<isglobal>False</isglobal>
+<missions>
+<item>
+<!--怪物ID-->
+<monsterid>21010101</monsterid>
+<!--环境变量-->
+<enviroment>env1</enviroment>
+<!--数量-->
+<count>7</count>
+</item>
+</missions>
+</item>
+</actions>
+</action>
+</item>
+</cases>
+</item>
+</actions>
+</item>
+<item type="Parallel">
+<isglobal>False</isglobal>
+<actionid>16</actionid>
+<actions>
+<item type="SwitchUntil">
+<isglobal>False</isglobal>
+<actionid>17</actionid>
+<cases>
+<item>
+<conditions>
+</conditions>
+<!--执行事件-->
+<action type="Parallel">
+<isglobal>False</isglobal>
+<actionid>18</actionid>
+<actions>
+<item type = "ControllerOperation">
+<!--动作ID-->
+<actionid>19</actionid>
+<!--是否是全局条件-->
+<isglobal>False</isglobal>
+<!--控制器操作-->
+<id>6010102</id>
+<!--操作类型 1open 2close-->
+<isopen>True</isopen>
+</item>
+</actions>
+</action>
+</item>
+</cases>
+</item>
+</actions>
+</item>
+<item type="Parallel">
+<isglobal>False</isglobal>
+<actionid>20</actionid>
+<actions>
+<item type="SwitchUntil">
+<isglobal>False</isglobal>
+<actionid>21</actionid>
+<cases>
+<item>
+<conditions>
+</conditions>
+<!--执行事件-->
+<action type="Parallel">
+<isglobal>False</isglobal>
+<actionid>22</actionid>
+<actions>
+<item type = "ShowGlobalTips">
+<!--动作ID-->
+<actionid>23</actionid>
+<!--是否是全局条件-->
+<isglobal>False</isglobal>
+</item>
+</actions>
+</action>
+</item>
+</cases>
+</item>
+</actions>
+</item>
+</actions>
+</item>
+</actions>
+</item>
+</scripts>
+</item>
+</layouts>
+</data>

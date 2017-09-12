@@ -1,0 +1,104 @@
+<configs namespace="cfg.cmd.action">
+
+	<struct name="BonusRandomInfo">
+		<field name="bonus" type="Bonus"/>
+		<field name="droprate" type="float"/>
+	</struct>
+
+	<struct name="Action">
+		<struct name="MultiAction">
+			<field name="actions" type="list:Action"/>
+		</struct>
+		<struct name="Bonus">
+			<struct name="BindType">
+				<field name="bindtype" type="cfg.item.EItemBindType"/>
+			</struct>
+			<struct name="FixCurrency">
+				<field name="amount" type="int"/>
+				<struct name="XuNiBi"/>
+				<struct name="YuanBao"/>
+				<struct name="BindYuanBao"/>
+				<struct name="LingJing"/>
+				<struct name="JingYan"/>
+				<struct name="ZaoHua"/>
+				<struct name="WuXing"/>
+				<struct name="BangPai"/>
+				<struct name="ShiMen"/>
+				<struct name="ZhanChang"/>
+				<struct name="ShengWang"/>
+				<struct name="HuoBanJiFen"/>
+				<struct name="FaBaoJiFen"/>
+				<struct name="ChengJiu"/>
+				<struct name="BangGong"/>
+				<struct name="TianFu"/>
+				<struct name="TiLi"/>
+			</struct>
+			<struct name="Currency">
+				<field name="type" type="cfg.currency.CurrencyType"/>
+				<field name="amount" type="int"/>
+			</struct>
+			<struct name="Currencys">
+				<field name="currencys" type="list:Currency"/>
+			</struct>
+			<struct name="OneItem">
+				<field name="itemid" type="int"/>
+			</struct>
+			<struct name="OneItems">
+				<field name="items" type="list:int"/>
+			</struct>
+			<struct name="Item">
+				<field name="itemid" type="int"/>
+				<field name="amount" type="int"/>
+			</struct>
+			<struct name="Items">
+				<field name="items" type="list:Item"/>
+			</struct>
+			<struct name="RandomItems">
+				<field name="items" type="list:Item"/>
+			</struct>
+			<struct name="CareerBonus">
+				<field name="career" type="cfg.role.EProfessionType"/>
+				<field name="bonus" type="Bonus"/>
+			</struct>
+			<struct name="MultiBonus">
+				<field name="bonuss" type="list:Bonus"/>
+			</struct>
+			<struct name="RandomBonus">
+				<field name="bonuss" type="list:BonusRandomInfo"/>
+			</struct>
+			<struct name="RepeatBonus">
+				<field name="bonus" type="Bonus"/>
+				<field name="num" type="int"/>
+			</struct>
+		</struct>
+
+		<struct name="OpenEctype">
+			<field name="ectypeid" type="int"/>
+		</struct>
+		<!--治疗和加buff-->
+		<struct name="Heal">
+			<field name="HP" type="float"/>
+			<field name="HPPrecent" type="float"/>
+			<field name="MP" type="float"/>
+			<field name="MPPrecent" type="float"/>
+		</struct>
+		<struct name="AddBuff">
+			<field name="buffid" type="float"/>
+		</struct>
+		<struct name="AddFamilyMoneyBuild">
+			<field name="money" type="long"/>
+			<field name="buildv" type="int"/>
+		</struct>
+		<!--功能型物品-->
+		<!--加伙伴和法宝经验，星阶经验-->
+		<struct name="AddExperience">
+			<field name="amount" type="int"/>
+			<struct name="RoleLevel" />玩家等级(将玩家的exp置为刚好升级到当前等级+N即可。伙伴和法宝同理。例如49级99.9998%经验，吃了升1级丹之后变为50级0%)
+			<struct name="PetExp" />伙伴经验
+			<struct name="PetLevel" />伙伴等级
+			<struct name="TalismanExp" />法宝经验
+			<struct name="TalismanLevel" />法宝等级
+			<struct name="Stamina" />体力
+		</struct>
+	</struct>
+</configs>
