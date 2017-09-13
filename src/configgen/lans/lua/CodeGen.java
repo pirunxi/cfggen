@@ -129,11 +129,11 @@ public class CodeGen implements Generator {
 			}
 			sb.append('}');
 			ls.add(sb.toString());
-			ls.add("meta.__index = function (t, key) local index = indexs[key] return rawget(t, index) or (index == 0 and '" + fullname + "') end");
+			ls.add("meta.__index = function (t, key) local index = indexs[key] return rawget(t, index) or (index == 0 and '" + fullname + "') or nil end");
 			for(Const c : struct.getConsts()) {
 				ls.add(String.format("meta.%s = %s", c.getName(), toLuaValue(c.getType(), c.getValue())));
 			}
-			ls.add(String.format("global_var('%s')['%s'] = meta", struct.getNamespace(), name));
+			//ls.add(String.format("global_var('%s')['%s'] = meta", struct.getNamespace(), name));
 			
 			ls.add(String.format("os['%s'] = function (self)", fullname));
 			if(struct.isDynamic()) {
