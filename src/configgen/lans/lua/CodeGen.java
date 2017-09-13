@@ -21,11 +21,10 @@ public class CodeGen implements Generator {
 		return ENUM.isEnum(type) ? "int" : type;
 	}
 	
-	String genStructBody(Struct struct, ArrayList<String> ls) {
+	String genStructBody(ArrayList<Field> fields, ArrayList<String> ls) {
 		StringBuilder sb = new StringBuilder();
-		for(Field f : struct.getSelfAndParentFiels()) {
+		for(Field f : fields) {
 			String ftype = f.getType();
-			String fname = f.getName();
 			final List<String> ftypes = f.getTypes();
 			if(f.checkInGroup(Main.groups)) {
 				if(f.isRaw()) {
@@ -39,7 +38,9 @@ public class CodeGen implements Generator {
 						case "list": {
 							final String valueType = toLuaType(ftypes.get(1));
 							sb.append(String.format("list(self, '%s'),", valueType));
-							
+							for(String idx : f.getIndexs()) {
+								sb.append("{},");
+							}
 							break;
 						}
 						case "set": {
@@ -91,30 +92,9 @@ public class CodeGen implements Generator {
 				"local list = os.list\n" +
 				"local set = os.set\n" +
 				"local map = os.map");
-		ls.add("local function global_var(namespace)");
-		ls.add("local t = _G");
-		ls.add("local idx = 1");
-		ls.add("while true do");
-		ls.add("local start, ends = find(namespace, '.', idx, true)");
-		ls.add("local subname = sub(namespace, idx, start and start - 1)");
-		ls.add("local subt = t[subname]");
-		ls.add("if not subt then");
-		ls.add("subt = {}");
-		ls.add("      t[subname] = subt");
-		ls.add("end");
-		ls.add("    t = subt");
-		ls.add("if start then"); 
-		ls.add("idx = ends + 1");
-		ls.add("else"); 
-		ls.add("return t");
-		ls.add("end");
-		ls.add("end");
-		ls.add("end");
+		ls.add("local function global_var(namespace) local t = _G local idx = 1 while true do local start, ends = find(namespace, '.', idx, true) local subname = sub(namespace, idx, start and start - 1) local subt = t[subname] if not subt then\n" +
+				"\tsubt = {} t[subname] = subt end t = subt if start then idx = ends + 1 else return t end end end\n");
 
-		ls.add("function os:gettype(typename)");
-		ls.add("return self[typename](self)");
-		ls.add("end");
-		ls.add("");
 
 		for(Struct struct : Struct.getExports()) {
 			final String fullname = struct.getFullName();
@@ -123,14 +103,17 @@ public class CodeGen implements Generator {
 			ls.add("local meta = {}");
 
 			ArrayList<Field> fields = struct.getSelfAndParentFiels();
-			StringBuilder sb = new StringBuilder("local indexs = {class=0,");
+			StringBuilder sb = new StringBuilder("local _indexs = {class=0,");
 			int index = 0;
 			for(Field f : fields) {
 				sb.append(f.getName()).append('=').append(++index).append(',');
+				for(String idx : f.getIndexs()) {
+					sb.append(f.getName()).append('_').append(idx).append('=').append(++index).append(',');
+				}
 			}
 			sb.append('}');
 			ls.add(sb.toString());
-			ls.add("meta.__index = function (t, key) local index = indexs[key] return rawget(t, index) or (index == 0 and '" + name + "') or nil end");
+			ls.add("meta.__index = function (t, key) local index = _indexs[key] return rawget(t, index) or (index == 0 and '" + name + "') or nil end");
 			for(Const c : struct.getConsts()) {
 				ls.add(String.format("meta.%s = %s", c.getName(), toLuaValue(c.getType(), c.getValue())));
 			}
@@ -142,18 +125,18 @@ public class CodeGen implements Generator {
 			} else {
 
 
-				ls.add("local o = {" + genStructBody(struct, ls) +
-						fields.stream().filter(f -> !f.getIndexs().isEmpty()).map(f ->
-								f.getIndexs().stream().map(idx -> f.getName() + "_" + idx + "={},").collect(Collectors.joining())).collect(Collectors.joining()) + "}");
+				ls.add("local o = {" + genStructBody(fields, ls) + "}");
 				ls.add("setmetatable(o, meta)");
-
 				for(Field f : fields) {
 					String fname = f.getName();
 					if (!f.getIndexs().isEmpty()) {
 						ls.add("do");
+						for (String idx : f.getIndexs()) {
+							ls.add(String.format("local _%s = o.%s_%s", idx, fname, idx));
+						}
 						ls.add(String.format("for _, _V in ipairs(o.%s) do", fname));
 						for (String idx : f.getIndexs()) {
-							ls.add(String.format("o.%s_%s[_V.%s] = _V", fname, idx, idx));
+							ls.add(String.format("_%s[_V.%s] = _V", idx, idx));
 						}
 						ls.add("end");
 						ls.add("end");
