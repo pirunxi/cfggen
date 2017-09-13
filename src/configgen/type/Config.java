@@ -48,7 +48,7 @@ public class Config {
 		}
 		for(int i = 0 ; i < inputFiles.length ; i++)
 			inputFiles[i] = Utils.combine(Main.csvDir, Utils.combine(dir, inputFiles[i]));
-		outputFile = Utils.combine(dir, name + ".data");
+		outputFile = name + ".data";
 		
 		groups = Utils.split(data, "group");
 		hsGroups.addAll(Arrays.asList(groups));

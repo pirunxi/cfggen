@@ -129,7 +129,7 @@ public class CodeGen implements Generator {
 			}
 			sb.append('}');
 			ls.add(sb.toString());
-			ls.add("meta.__index = function (t, key) local index = indexs[key] return rawget(t, index) or (index == 0 and '" + fullname + "') or nil end");
+			ls.add("meta.__index = function (t, key) local index = indexs[key] return rawget(t, index) or (index == 0 and '" + name + "') or nil end");
 			for(Const c : struct.getConsts()) {
 				ls.add(String.format("meta.%s = %s", c.getName(), toLuaValue(c.getType(), c.getValue())));
 			}
