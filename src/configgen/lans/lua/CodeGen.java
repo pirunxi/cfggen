@@ -122,9 +122,10 @@ public class CodeGen implements Generator {
 			ls.add("do");
 			ls.add("local meta = {}");
 
+			ArrayList<Field> fields = struct.getSelfAndParentFiels();
 			StringBuilder sb = new StringBuilder("local indexs = {class=0,");
 			int index = 0;
-			for(Field f : struct.getSelfAndParentFiels()) {
+			for(Field f : fields) {
 				sb.append(f.getName()).append('=').append(++index).append(',');
 			}
 			sb.append('}');
@@ -139,8 +140,26 @@ public class CodeGen implements Generator {
 			if(struct.isDynamic()) {
 				ls.add("return self[string(self)](self)");
 			} else {
-				ls.add("local o = {" + genStructBody(struct, ls) + "}");
+
+
+				ls.add("local o = {" + genStructBody(struct, ls) +
+						fields.stream().filter(f -> !f.getIndexs().isEmpty()).map(f ->
+								f.getIndexs().stream().map(idx -> f.getName() + "_" + idx + "={},").collect(Collectors.joining())).collect(Collectors.joining()) + "}");
 				ls.add("setmetatable(o, meta)");
+
+				for(Field f : fields) {
+					String fname = f.getName();
+					if (!f.getIndexs().isEmpty()) {
+						ls.add("do");
+						ls.add(String.format("for _, _V in ipairs(o.%s) do", fname));
+						for (String idx : f.getIndexs()) {
+							ls.add(String.format("o.%s_%s[_V.%s] = _V", fname, idx, idx));
+						}
+						ls.add("end");
+						ls.add("end");
+					}
+				}
+
 				ls.add("return o");
 			}
 			ls.add("end");
@@ -170,7 +189,6 @@ public class CodeGen implements Generator {
 		final String namespace = "cfg";
 		final ArrayList<String> ls = new ArrayList<String>();
 		ls.add(String.format("local os = require '%s.structs'", namespace));
-		ls.add("local create_datastream = create_datastream");
 		ls.add("local cfgs = {}");
 		ls.add("for _, s in ipairs({");
 		exportConfigs.forEach(c -> ls.add(String.format("{name='%s', type='%s', index='%s', output='%s', single=%s},",
@@ -178,7 +196,7 @@ public class CodeGen implements Generator {
 		ls.add("}) do");
 		
 
-		ls.add(String.format("local fs = create_datastream(s.output)"));
+		ls.add("local fs = os.create(s.output)");
 		ls.add("local method = os[s.type]");
 		ls.add("if not s.single then");
 		ls.add("local c = {}");
